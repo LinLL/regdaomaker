@@ -8,10 +8,6 @@ def getOneTestMailPwd():
             return mail, pwd
 def test_checkStatus():
     mail, pwd = getOneTestMailPwd()
-
     testImapMail = ImapMail(mail, pwd)
-    print(testImapMail.mail)
-    print(testImapMail.passwd)
-
     result = testImapMail.checkStatus()
     assert result == True
