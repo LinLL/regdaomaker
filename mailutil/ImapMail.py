@@ -31,9 +31,22 @@ class ImapMail(object):
 
     def searchSubject(self, subject):
         with MailBox(self.mailserver).login(self.mail, self.passwd) as mailbox:
-            # mailbox.login_result
             for msg in mailbox.fetch(A(subject=subject)):
                 return msg
+
+    def searchSender(self, sender):
+        with MailBox(self.mailserver).login(self.mail, self.passwd) as mailbox:
+            for msg in mailbox.fetch(A(from_=sender)):
+                return msg
+
+    def getAllMailSubject(self):
+        subjects = []
+        with MailBox(self.mailserver).login(self.mail, self.passwd) as mailbox:
+            for msg in mailbox.fetch():
+                subjects.append(msg.subject)
+
+        return subjects
+
 
 
 if __name__ == '__main__':
@@ -43,6 +56,12 @@ if __name__ == '__main__':
             mail, pwd = line.split("|")
             pwd = pwd.strip()
             mail_list.append({"addr": mail, "pwd": pwd})
+            break
 
-    testImapMail = ImapMail()
-    testImapMail.checkAllStatus(mail_list)
+    testImapMail = ImapMail(mail, pwd)
+    # msg = testImapMail.searchSender("daomaker")
+    # print(msg.subject)
+    subs = testImapMail.getAllMailSubject()
+    print(subs)
+
+
