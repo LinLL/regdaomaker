@@ -1,4 +1,5 @@
 from imap_tools import MailBox, A, BaseMailBox
+import re
 
 class ImapMail(object):
     def __init__(self, mail, passwd, mailserver="pop-mail.outlook.com"):
@@ -47,6 +48,11 @@ class ImapMail(object):
 
         return subjects
 
+    def parseRegMail(self, msg):
+        api_pattern = re.compile(r'https?://api\.\S+')
+        first_api = api_pattern.search(msg.text).group()
+        return first_api
+
 
 
 if __name__ == '__main__':
@@ -59,9 +65,9 @@ if __name__ == '__main__':
             break
 
     testImapMail = ImapMail(mail, pwd)
-    # msg = testImapMail.searchSender("daomaker")
-    # print(msg.subject)
-    subs = testImapMail.getAllMailSubject()
-    print(subs)
+    msg = testImapMail.searchSender("daomaker")
+    testImapMail.parseRegMail(msg)
+    # subs = testImapMail.getAllMailSubject()
+    # print(subs)
 
 
