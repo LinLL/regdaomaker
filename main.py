@@ -3,14 +3,15 @@ import time
 from RegDaoMaker import RegDaoMaker
 from mailutil.ImapMail import ImapMail
 
-def run():
+def run(mail, pwd, regpwd):
     testRegDaoMaker = RegDaoMaker()
-    testRegDaoMaker.reg("jeeanmoodiex@hotmail.com","q1w2e3R$")
+    testRegDaoMaker.reg(mail, regpwd)
 
-    myMail = ImapMail("jeeanmoodiex@hotmail.com","AHFAGA32")
-    msg = myMail.searchSender("daomaker")
+    myMail = ImapMail(mail, pwd)
+    msg = myMail.searchSubject("Confirm your account")
     verify_url = myMail.parseRegMail(msg)
-    testRegDaoMaker.driver.get(verify_url)
+    testRegDaoMaker.verify(verify_url)
+
 
 
 if __name__ == '__main__':
