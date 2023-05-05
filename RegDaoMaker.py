@@ -29,6 +29,13 @@ class RegDaoMaker(object):
         wait = WebDriverWait(self.driver, 30)
         wait.until(EC.url_contains("reg-verify-email"))
 
+    def verify(self, url):
+        self.driver.get(url)
+        WebDriverWait(self.driver, 30).until(
+            EC.url_contains("welcome")
+        )
+        return True
+
 
 
 if __name__ == '__main__':
