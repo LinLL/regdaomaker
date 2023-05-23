@@ -53,20 +53,38 @@ class ImapMail(object):
         first_api = api_pattern.search(msg.text).group()
         return first_api
 
-
-
-if __name__ == '__main__':
+def getAllMailList(path="../data/mailspwd"):
     mail_list = []
-    with open("../data/mailspwd", 'r') as fr:
+    with open(path, 'r') as fr:
         for line in fr.readlines():
             mail, pwd = line.split("|")
             pwd = pwd.strip()
             mail_list.append({"addr": mail, "pwd": pwd})
-            break
+    return mail_list
 
-    testImapMail = ImapMail(mail, pwd)
-    msg = testImapMail.searchSender("daomaker")
-    testImapMail.parseRegMail(msg)
+def checkAllStatus(path="../data/mailspwd"):
+    mail_list = getAllMailList(path)
+    for mail, pwd in mail_list:
+        myImap = ImapMail(mail, pwd)
+        print(mail, myImap.checkStatus())
+
+
+
+if __name__ == '__main__':
+    # mail_list = []
+    # with open("../data/mailspwd", 'r') as fr:
+    #     for line in fr.readlines():
+    #         mail, pwd = line.split("|")
+    #         pwd = pwd.strip()
+    #         mail_list.append({"addr": mail, "pwd": pwd})
+    #         break
+
+    #checkAllStatus()
+
+    testImapMail = ImapMail("abkalodessaw@hotmail.com","72plzQ38")
+    msg = testImapMail.searchSubject("Confirm your account")
+    result = testImapMail.parseRegMail(msg)
+    print(result)
     # subs = testImapMail.getAllMailSubject()
     # print(subs)
 
